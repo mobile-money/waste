@@ -1,5 +1,31 @@
 <div class="row">
     <h1 class="text-center">Waste planning</h1>
     <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Date Added</th>
+                <th>Apprx. Cost</th>
+                <th>Before</th>
+                <th>Priority</th>
+                <th>Schdl</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="waste in wastes">
+                <td>{{waste.title}}</td>
+                <td>{{waste.added | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+                <td>{{waste.cost}}</td>
+                <td>{{waste.actions}}</td>
+                <td>{{waste.priority}}</td>
+                <td>{{waste.scheduled}}</td>
+            </tr>
+        </tbody>
     </table>
+
+    <form ng-submit="addWaste()" class="form-inline" name="addWasteForm">
+        <input class="form-control" type="text" ng-model="newWaste.title" placeholder="title" required />
+        <input class="form-control" type="text" ng-model="newWaste.cost" placeholder="cost" />
+        <button class="btn btn-primary" type="submit" ng-disabled="addAccountForm.$invalid">Add</button>
+    </form>
 </div>

@@ -12,5 +12,15 @@ app.config(function($stateProvider, $urlRouterProvider, growlProvider) {
 });
 
 app.controller('IndexController', function($scope, $http, growl) {
-    $scope.hello = "Hello, yeah!"
+    $scope.newWaste = {};
+    $scope.wastes = [];
+    $http.get('api/waste').then(function(response) {
+        $scope.wastes = response.data;
+    });
+    $scope.addWaste = function() {
+        $http.post('/api/waste', $scope.newWaste).then(function() {
+            $scope.wastes.push($scope.newWaste);
+            $scope.newWaste = {};
+        });
+    }
 });
