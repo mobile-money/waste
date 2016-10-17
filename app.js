@@ -87,8 +87,6 @@ router.get('/logout', function(req, res) {
 });
 
 router.post('/api/waste', loginChecker.ensureLoggedIn(), function(req, res) {
-    var waste = req.body;
-    waste.dateAdded = new Date();
     db.get('waste').insert(req.body, function() {
         res.sendStatus(201);
     });

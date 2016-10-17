@@ -12,12 +12,13 @@ app.config(function($stateProvider, $urlRouterProvider, growlProvider) {
 });
 
 app.controller('IndexController', function($scope, $http, growl) {
-    $scope.newWaste = {};
+    $scope.newWaste = {priority: 'medium'};
     $scope.wastes = [];
     $http.get('api/waste').then(function(response) {
         $scope.wastes = response.data;
     });
     $scope.addWaste = function() {
+        $scope.newWaste.dateAdded = new Date();
         $http.post('/api/waste', $scope.newWaste).then(function() {
             $scope.wastes.push($scope.newWaste);
             $scope.newWaste = {};
