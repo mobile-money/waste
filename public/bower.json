@@ -1,0 +1,25 @@
+{
+  "name": "ilt2",
+  "description": "Instagram like tool",
+  "main": "",
+  "authors": [
+    "pikkvile"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "*",
+    "bootstrap": "*",
+    "angular-ui-router": "*",
+    "angular-loading-bar": "*",
+    "angular-growl-v2": "*"
+  }
+}
