@@ -10,6 +10,10 @@
     background: rgba(49, 112, 143, 0.1);
 }
 
+.pr-high, .u-tomorrow {
+    background: rgba(169, 68, 66, 0.1);
+}
+
 .edit-waste {
     position: absolute;
     left: -20px;
@@ -20,4 +24,8 @@
 
 .wastes tr:hover .edit-waste {
     display: block;
+}
+
+.wastes th a {
+    text-decoration: none;
 }

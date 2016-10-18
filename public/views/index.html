@@ -4,16 +4,20 @@
         <table class="table table-hover wastes">
             <thead>
                 <tr>
-                    <th>Title</th>
-                    <th>Date Added</th>
-                    <th>Apprx. Cost</th>
-                    <th>Before</th>
-                    <th>Priority</th>
-                    <th>Urgency</th>
+                    <th ng-repeat="header in headers">
+                        <a ng-if="header.sort" href ng-click="setSort(header.sort)">
+                            <span>{{header.name}}</span>
+                            <i ng-if="sort == header.sort || sort == '-' + header.sort"
+                               ng-class="{'glyphicon-arrow-down': sort == header.sort,
+                                          'glyphicon-arrow-up': sort == '-' + header.sort}"
+                               class="glyphicon"></i>
+                        </a>
+                        <span ng-if="!header.sort">{{header.name}}</span>
+                    </th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="waste in wastes">
+                <tr ng-repeat="waste in wastes | orderBy:sort">
                     <td style="position: relative;">
                         <i class="glyphicon glyphicon-pencil edit-waste"></i>
                         <span>{{waste.title}}</span>
