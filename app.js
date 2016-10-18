@@ -5,7 +5,6 @@ var cookieParser = require('cookie-parser');
 var session = require('express-session');
 var passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
-    RememberMeStrategy = require('passport-remember-me').Strategy,
     loginChecker = require('connect-ensure-login'),
     md5 = require('md5');
 
@@ -22,24 +21,6 @@ passport.use(new LocalStrategy(
       else return done(null, false, {message: 'Incorrect password or username.'});
     }
 ));
-
-passport.use(new RememberMeStrategy(
-    function(token, done) {
-        Token.consume(token, function (err, user) {
-            if (err) { return done(err); }
-            if (!user) { return done(null, false); }
-            return done(null, user);
-        });
-    },
-    function(user, done) {
-        var token = md5('waste' + new Date());
-        Token.save(token, user, function(err) {
-            if (err) { return done(err); }
-            return done(null, token);
-        });
-    }
-));
-
 
 passport.serializeUser(function(user, cb) {
   cb(null, user.username);
@@ -61,24 +42,10 @@ router.get('/', loginChecker.ensureLoggedIn(), function(req, res) {
 router.get('/login', function(req, res) {
   res.sendFile(path.join(__dirname, 'public/login.html'));
 });
-/*router.post('/login', passport.authenticate('local', {failureRedirect: '/login?error'}), function(req, res) {
-  res.redirect('/');
-});*/
 
-router.post('/login',
-    passport.authenticate('local', { failureRedirect: '/login'}),
-    function(req, res, next) {
-
-        var token = md5('waste' + new Date());
-            Token.save(token, req.username, function(err) {
-            if (err) { return done(err); }
-            res.cookie('remember_me', token, { path: '/', httpOnly: true, maxAge: 604800000 }); // 7 days
-            return next();
-        });
-    },
-    function(req, res) {
-        res.redirect('/');
-    });
+router.post('/login', passport.authenticate('local', {failureRedirect: '/login?error'}), function(req, res) {
+    res.redirect('/');
+});
 
 router.get('/logout', function(req, res) {
   req.logOut();
@@ -104,21 +71,6 @@ app.use(cookieParser());
 app.use(session({secret: 'lsadkjflksadjf;lkajshdf', resave: false, saveUninitialized: false}));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(passport.authenticate('remember-me'));
 app.use(router);
-
-var Token = (function() {
-    var tokens = {};
-    return {
-        consume: function (token, cb) {
-            if (tokens[token]) cb(null, tokens[token]);
-            else cb ('no such user', null);
-        },
-        save: function(token, username, cb) {
-            tokens[token] = users[username];
-            cb(null);
-        }
-    }
-})();
 
 module.exports = app;

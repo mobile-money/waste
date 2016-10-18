@@ -1,3 +1,23 @@
 .new-waste {
     margin-top: -20px;
 }
+
+.pr-medium, .u-week {
+    background: rgba(138, 109, 59, 0.1);
+}
+
+.pr-low, .u-month {
+    background: rgba(49, 112, 143, 0.1);
+}
+
+.edit-waste {
+    position: absolute;
+    left: -20px;
+    top: 10px;
+    display: none;
+    width: 100px;
+}
+
+.wastes tr:hover .edit-waste {
+    display: block;
+}

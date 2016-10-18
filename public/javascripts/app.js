@@ -12,7 +12,7 @@ app.config(function($stateProvider, $urlRouterProvider, growlProvider) {
 });
 
 app.controller('IndexController', function($scope, $http, growl) {
-    $scope.newWaste = {priority: 'medium'};
+    $scope.newWaste = {priority: 'medium', urgency: 'later'};
     $scope.wastes = [];
     $http.get('api/waste').then(function(response) {
         $scope.wastes = response.data;
@@ -21,7 +21,7 @@ app.controller('IndexController', function($scope, $http, growl) {
         $scope.newWaste.dateAdded = new Date();
         $http.post('/api/waste', $scope.newWaste).then(function() {
             $scope.wastes.push($scope.newWaste);
-            $scope.newWaste = {};
+            $scope.newWaste = {priority: 'medium', urgency: 'later'};
         });
     }
 });
