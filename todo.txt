@@ -1,3 +1,6 @@
-1. Sort immediately
+1. Sort immediately after add of edit
 2. Focus
 3. Index, total
+
+4. Money block, all prices in percentage and advice to divide
+5. Money flow: today, yesterday, predict tomorrow

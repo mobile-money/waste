@@ -48,14 +48,22 @@ app.controller('IndexController', function($scope, $http, growl) {
             return waste;
         });
     });
-    $scope.addWaste = function() {
-        var newWaste = $scope.selectedWaste;
-        newWaste.dateAdded = new Date();
-        newWaste.cost = parseInt(newWaste.cost) || '';
-        $http.post('/api/waste', newWaste).then(function() {
-            $scope.wastes.push(newWaste);
-            $scope.selectedWaste = new Waste();
-        });
+    $scope.upsertWaste = function() {
+        var selectedWaste = $scope.selectedWaste;
+        if (!selectedWaste._id) {
+            selectedWaste.dateAdded = new Date();
+            selectedWaste.cost = parseInt(selectedWaste.cost) || '';
+            $http.post('/api/waste', selectedWaste).then(function() {
+                $scope.wastes.push(selectedWaste);
+                $scope.selectedWaste = new Waste();
+            });
+        } else {
+            selectedWaste.dateUpdated = new Date();
+            selectedWaste.cost = parseInt(selectedWaste.cost) || '';
+            $http.put('/api/waste/' + selectedWaste._id, selectedWaste).then(function() {
+                growl.success('Updated!');
+            });
+        }
     };
     $scope.sort = 'priorityVal';
     $scope.setSort = function(sort) {

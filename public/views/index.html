@@ -18,7 +18,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat="waste in wastes | orderBy:sort" ng-click="selectWaste(waste)"
-                    ng-class="{'selected': selectedWaste && selectedWaste.title = waste.title}">
+                    ng-class="{'selected': selectedWaste && selectedWaste.title == waste.title}">
                     <td>{{waste.title}}</td>
                     <td>{{waste.dateAdded | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>{{waste.cost}}</td>
@@ -30,27 +30,27 @@
         </table>
     </div>
 
-    <form ng-submit="addWaste()" class="form col-md-3 new-waste" name="addWasteForm">
+    <form ng-submit="upsertWaste()" class="form col-md-3 new-waste" name="addWasteForm">
         <h2>{{selectedWaste.title ? 'Edit waste' : 'New Waste'}}</h2>
         <div class="form-group">
-            <input class="form-control" type="text" ng-model="newWaste.title" placeholder="title" required />
+            <input class="form-control" type="text" ng-model="selectedWaste.title" placeholder="title" required />
         </div>
         <div class="form-group">
-            <input class="form-control" type="text" ng-model="newWaste.cost" placeholder="cost" />
+            <input class="form-control" type="text" ng-model="selectedWaste.cost" placeholder="cost" />
         </div>
 
         <div class="radio form-group text-right">
             <span class="pull-left">priority</span>
             <label for="pr-high" class="text-danger">
-                <input type="radio" ng-model="newWaste.priority" value="high" id="pr-high" />
+                <input type="radio" ng-model="selectedWaste.priority" value="high" id="pr-high" />
                 high
             </label>
             <label for="pr-medium" class="text-warning">
-                <input type="radio" ng-model="newWaste.priority" value="medium" id="pr-medium"/>
+                <input type="radio" ng-model="selectedWaste.priority" value="medium" id="pr-medium"/>
                 medium
             </label>
             <label for="pr-low" class="text-info">
-                <input type="radio" ng-model="newWaste.priority" value="low" id="pr-low" />
+                <input type="radio" ng-model="selectedWaste.priority" value="low" id="pr-low" />
                 low
             </label>
         </div>
@@ -58,25 +58,25 @@
         <div class="radio form-group text-right">
             <span class="pull-left">urgency</span>
             <label for="u-tomorrow" class="text-danger">
-                <input type="radio" ng-model="newWaste.urgency" value="tomorrow" id="u-tomorrow" />
+                <input type="radio" ng-model="selectedWaste.urgency" value="tomorrow" id="u-tomorrow" />
                 tomorrow
             </label>
             <label for="u-week" class="text-warning">
-                <input type="radio" ng-model="newWaste.urgency" value="week" id="u-week"/>
+                <input type="radio" ng-model="selectedWaste.urgency" value="week" id="u-week"/>
                 this week
             </label>
             <label for="u-month" class="text-info">
-                <input type="radio" ng-model="newWaste.urgency" value="month" id="u-month" />
+                <input type="radio" ng-model="selectedWaste.urgency" value="month" id="u-month" />
                 this month
             </label>
             <label for="u-later">
-                <input type="radio" ng-model="newWaste.urgency" value="later" id="u-later" />
+                <input type="radio" ng-model="selectedWaste.urgency" value="later" id="u-later" />
                 later
             </label>
         </div>
 
         <div class="form-group text-right">
-            <button class="btn btn-primary" ng-if="selectedWaste.title" ng-click="unselect()">Cancel</button>
+            <button type="button" class="btn btn-primary" ng-if="selectedWaste.title" ng-click="unselect()">Cancel</button>
             <button class="btn btn-primary" type="submit"
                     ng-disabled="addWasteForm.$invalid">{{selectedWaste.title ? 'Save' : 'Add'}}</button>
         </div>

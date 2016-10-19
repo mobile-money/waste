@@ -63,6 +63,11 @@ router.get('/api/waste', loginChecker.ensureLoggedIn(), function(req, res) {
         res.send(wastes);
     });
 });
+router.put('/api/waste/:wasteId', loginChecker.ensureLoggedIn(), function(req, res) {
+    db.get('waste').update(req.params.wasteId, req.body, function() {
+        res.sendStatus(200);
+    });
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
