@@ -18,15 +18,12 @@
             </thead>
             <tbody>
                 <tr ng-repeat="waste in wastes | orderBy:sort">
-                    <td style="position: relative;">
-                        <i class="glyphicon glyphicon-pencil edit-waste"></i>
-                        <span>{{waste.title}}</span>
-                    </td>
+                    <td>{{waste.title}}</td>
                     <td>{{waste.dateAdded | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>{{waste.cost}}</td>
                     <td>{{waste.actions}}</td>
-                    <td class="pr-{{waste.priority}}">{{waste.priority}}</td>
-                    <td class="u-{{waste.urgency}}">{{waste.urgency}}</td>
+                    <td><span class="label pr-{{waste.priority}}">{{waste.priority}}</span></td>
+                    <td><span class="label u-{{waste.urgency}}">{{waste.urgency}}</span></td>
                 </tr>
             </tbody>
         </table>
