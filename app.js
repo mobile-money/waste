@@ -68,6 +68,11 @@ router.put('/api/waste/:wasteId', loginChecker.ensureLoggedIn(), function(req, r
         res.sendStatus(200);
     });
 });
+router.delete('/api/waste/:wasteId', loginChecker.ensureLoggedIn(), function(req, res) {
+    db.get('waste').remove(req.params.wasteId, function() {
+        res.sendStatus(204);
+    });
+});
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());

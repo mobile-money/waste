@@ -65,6 +65,11 @@ app.controller('IndexController', function($scope, $http, growl) {
             });
         }
     };
+    $scope.deleteWaste = function() {
+        $scope.wastes.splice($scope.wastes.indexOf($scope.selectedWaste), 1);
+        if ($scope.selectedWaste._id) $http.delete('/api/waste/' + $scope.selectedWaste._id);
+    };
+    
     $scope.sort = 'priorityVal';
     $scope.setSort = function(sort) {
         if ($scope.sort == sort) sort = '-' + sort;
