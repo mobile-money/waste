@@ -22,3 +22,11 @@
 .wastes th a {
     text-decoration: none;
 }
+
+.wastes tbody tr {
+    cursor: pointer;
+}
+
+.waster tbody tr.selected {
+    background: #f5f5f5;
+}

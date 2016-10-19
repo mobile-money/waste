@@ -24,6 +24,11 @@ var urgencies = {
     tomorrow: 0
 };
 
+function Waste() {
+    this.priority = 'medium';
+    this.urgency = 'later';
+}
+
 app.controller('IndexController', function($scope, $http, growl) {
     $scope.headers = [
         {name: 'Title', sort: 'title'},
@@ -33,7 +38,7 @@ app.controller('IndexController', function($scope, $http, growl) {
         {name: 'Priority', sort: 'priorityVal'},
         {name: 'Urgency', sort: 'urgencyVal'}
     ];
-    $scope.newWaste = {priority: 'medium', urgency: 'later'};
+    $scope.selectedWaste = new Waste();
     $scope.wastes = [];
     $http.get('api/waste').then(function(response) {
         $scope.wastes = response.data.map(function(waste) {
@@ -44,16 +49,23 @@ app.controller('IndexController', function($scope, $http, growl) {
         });
     });
     $scope.addWaste = function() {
-        $scope.newWaste.dateAdded = new Date();
-        $scope.newWaste.cost = parseInt($scope.newWaste.cost) || '';
-        $http.post('/api/waste', $scope.newWaste).then(function() {
-            $scope.wastes.push($scope.newWaste);
-            $scope.newWaste = {priority: 'medium', urgency: 'later'};
+        var newWaste = $scope.selectedWaste;
+        newWaste.dateAdded = new Date();
+        newWaste.cost = parseInt(newWaste.cost) || '';
+        $http.post('/api/waste', newWaste).then(function() {
+            $scope.wastes.push(newWaste);
+            $scope.selectedWaste = new Waste();
         });
-    }
+    };
     $scope.sort = 'priorityVal';
     $scope.setSort = function(sort) {
         if ($scope.sort == sort) sort = '-' + sort;
         $scope.sort = sort;
-    }
+    };
+    $scope.selectWaste = function(waste) {
+        $scope.selectedWaste = waste;
+    };
+    $scope.unselect =function() {
+        $scope.selectedWaste = new Waste();
+    };
 });
