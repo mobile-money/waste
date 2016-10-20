@@ -1,0 +1,14 @@
+<div class="row">
+    <h1 class="text-center">Money</h1>
+
+    <form class="form col-md-3" name="todayMoneyForm" ng-submit="saveTodayMoney()">
+        <div class="form-group">
+            <label for="today-money">What do you have today, dude?</label>
+            <input class="form-control money" type="text" ng-model="todayMoney" maxlength="8" ng-pattern="/^\d{1,8}$/"
+                   required id="today-money" />
+        </div>
+        <div class="form-group text-right">
+            <button class="btn btn-primary" type="submit" ng-disabled="todayMoneyForm.$invalid">Save</button>
+        </div>
+    </form>
+</div>

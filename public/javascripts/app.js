@@ -8,6 +8,10 @@ app.config(function($stateProvider, $urlRouterProvider, growlProvider) {
         url: '/',
         templateUrl: 'views/index.html',
         controller: 'IndexController'
+    }).state('money', {
+        url: '/money',
+        templateUrl: 'views/money.html',
+        controller: 'MoneyController'
     });
 });
 
@@ -48,6 +52,12 @@ app.controller('IndexController', function($scope, $http, growl) {
             return waste;
         });
     });
+    $http.get('/api/money').then(function(response) {
+        var money = response.data;
+        $scope.money = money;
+        $scope.todayMoney = money.find(function(m) { return m.date == getLocalToday();}).money;
+    });
+    
     $scope.upsertWaste = function() {
         var selectedWaste = $scope.selectedWaste;
         if (!selectedWaste._id) {
@@ -82,3 +92,23 @@ app.controller('IndexController', function($scope, $http, growl) {
         $scope.selectedWaste = new Waste();
     };
 });
+
+app.controller('MoneyController', function($scope, $http, $filter, growl) {
+    function getLocalToday() {
+        return $filter('date')(new Date(), 'yyyyMMdd');
+    }
+    $http.get('/api/money').then(function(response) {
+        var money = response.data;
+        $scope.money = money;
+        $scope.todayMoney = money.find(function(m) { return m.date == getLocalToday();}).money;
+    });
+    $scope.saveTodayMoney = function() {
+        $http.post('/api/money/' + getLocalToday(), {
+            date: getLocalToday(),
+            money: parseInt($scope.todayMoney)
+        }).then(function() {
+            growl.success('Saved! See you tomorrow.');
+        });
+    }
+});
+

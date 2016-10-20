@@ -74,6 +74,17 @@ router.delete('/api/waste/:wasteId', loginChecker.ensureLoggedIn(), function(req
     });
 });
 
+router.post('/api/money/:date', loginChecker.ensureLoggedIn(), function(req, res) {
+    db.get('money').update({date: req.params.date}, req.body, {upsert: true}).then(function() {
+        res.sendStatus(200);
+    });
+});
+router.get('/api/money', loginChecker.ensureLoggedIn(), function(req, res) {
+    db.get('money').find().then(function(money) {
+        res.send(money);
+    });
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
