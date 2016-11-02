@@ -18,6 +18,9 @@
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
+
+        <script src="bower_components/highcharts/highcharts.js"></script>
+        <script src="bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>
     </head>
 
     <body ng-app="waste" class="">
@@ -27,8 +30,8 @@
                 <h1>Waste analytics</h1>
                 <div>
                     <ul class="list-inline navi">
-                        <li><a ui-sref="index">Wastes</a></li>
-                        <li><a ui-sref="money">Money</a></li>
+                        <li ui-sref-active="active"><a ui-sref="index">Wastes</a></li>
+                        <li ui-sref-active="active"><a ui-sref="money">Money</a></li>
                         <li class="pull-right"><a href="/logout">Logout</a></li>
                     </ul>
                 </div>

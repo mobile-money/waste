@@ -36,8 +36,8 @@
     font-size: 1em;
 }
 
-.navi li:hover {
-    background: #ddd;
+.navi li:hover, .navi li.active {
+    border-bottom: 2px solid #333;
 }
 
 .navi a, .nave a:hover {

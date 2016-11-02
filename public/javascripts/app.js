@@ -1,4 +1,4 @@
-var app = angular.module('waste', ['angular-loading-bar', 'ui.router', 'angular-growl']);
+var app = angular.module('waste', ['angular-loading-bar', 'ui.router', 'angular-growl', 'highcharts-ng']);
 
 app.config(function($stateProvider, $urlRouterProvider, growlProvider) {
     growlProvider.globalTimeToLive(3000);
@@ -33,7 +33,7 @@ function Waste() {
     this.urgency = 'later';
 }
 
-app.controller('IndexController', function($scope, $http, growl) {
+app.controller('IndexController', function($scope, $http, growl, utils) {
     $scope.headers = [
         {name: 'Title', sort: 'title'},
         {name: 'Date Added', sort: 'dateAdded'},
@@ -55,7 +55,8 @@ app.controller('IndexController', function($scope, $http, growl) {
     $http.get('/api/money').then(function(response) {
         var money = response.data;
         $scope.money = money;
-        $scope.todayMoney = money.find(function(m) { return m.date == getLocalToday();}).money;
+        var todays = money.find(function(m) { return m.date == utils.getLocalToday();});
+        $scope.todayMoney = todays ? todays.money : void(0);
     });
     
     $scope.upsertWaste = function() {
@@ -93,22 +94,66 @@ app.controller('IndexController', function($scope, $http, growl) {
     };
 });
 
-app.controller('MoneyController', function($scope, $http, $filter, growl) {
-    function getLocalToday() {
-        return $filter('date')(new Date(), 'yyyyMMdd');
-    }
+app.controller('MoneyController', function($scope, $http, growl, utils) {
     $http.get('/api/money').then(function(response) {
         var money = response.data;
         $scope.money = money;
-        $scope.todayMoney = money.find(function(m) { return m.date == getLocalToday();}).money;
+        var todays = money.find(function(m) { return m.date == utils.getLocalToday();});
+        $scope.todayMoney = todays ? todays.money : void(0);
+        $scope.moneyChartConfig = {
+            options: {
+                chart: {
+                    type: 'column'
+                },
+                tooltip: {
+                    style: {
+                        padding: 10,
+                        fontWeight: 'bold'
+                    },
+                    formatter: function() {
+                        return this.y;
+                    }
+                },
+                legend: {enabled: false}
+            },
+            title: {
+                text: ''
+            },
+            series: [{
+                data: money.map(function(m) {
+                    return [utils.parseDate(m.date), m.money];
+                }),
+                pointWidth: 10,
+                pointPadding: 0
+            }],
+            xAxis: {
+                title: {text: 'Days'},
+                type: 'datetime'
+            },
+            yAxis: {
+                title: {
+                    text: 'Money'
+                }
+            }
+        };
+        console.log('wtf');
     });
     $scope.saveTodayMoney = function() {
-        $http.post('/api/money/' + getLocalToday(), {
-            date: getLocalToday(),
+        $http.post('/api/money/' + utils.getLocalToday(), {
+            date: utils.getLocalToday(),
             money: parseInt($scope.todayMoney)
         }).then(function() {
             growl.success('Saved! See you tomorrow.');
         });
-    }
+    };
+});
+
+app.service('utils', function($filter) {
+    this.getLocalToday = function() {
+        return $filter('date')(new Date(), 'yyyyMMdd');
+    };
+    this.parseDate = function(str) {
+        return Date.UTC(parseInt(str.substring(0, 4)), parseInt(str.substring(4, 6)) - 1, parseInt(str.substring(6, 8)));
+    };
 });
 

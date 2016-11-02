@@ -20,6 +20,8 @@
     "bootstrap": "*",
     "angular-ui-router": "*",
     "angular-loading-bar": "*",
-    "angular-growl-v2": "*"
+    "angular-growl-v2": "*",
+    "highcharts": "*",
+    "highcharts-ng": "*"
   }
 }
