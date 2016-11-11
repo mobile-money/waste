@@ -29,6 +29,7 @@
                     <td>{{waste.cost}}</td>
                     <td ng-if="waste.status === 'closed'">{{waste.actualCost}}</td>
                     <td ng-if="waste.status === 'actual'">{{waste.actions}}</td>
+                    <td ng-if="waste.status === 'closed'">{{waste.comment}}</td>
                     <td ng-if="waste.status === 'actual'"><span class="label pr-{{waste.priority}}">{{waste.priority}}</span></td>
                 </tr>
             </tbody>
@@ -50,7 +51,6 @@
         </div>
 
         <div class="radio form-group text-right">
-            <span class="pull-left">priority</span>
             <label for="pr-high" class="text-danger">
                 <input type="radio" ng-model="selectedWaste.priority" value="high" id="pr-high" />
                 high

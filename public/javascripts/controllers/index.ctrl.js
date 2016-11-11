@@ -12,14 +12,16 @@ angular.module('waste').controller('IndexController', function($scope, $http, $u
     $scope.currentFilter = 'actual';
     $scope.filter = function(f) {
         $scope.currentFilter = f;
+        $scope.sort = f === 'actual' ? 'priorityVal' : '-closedAt';
     }
     $scope.headers = [
         {name: 'Title', sort: 'title', forState: 'all'},
         {name: 'Date Added', sort: 'dateAdded', forState: 'all'},
-        {name: 'Date Closed', sort: 'dateClosed', forState: 'closed'},
+        {name: 'Date Closed', sort: 'closedAt', forState: 'closed'},
         {name: 'Apprx. Cost', sort: 'cost', forState: 'all'},
         {name: 'Real Cost', sort: 'actualCost', forState: 'closed'},
         {name: 'Before', forState: 'actual'},
+        {name: 'Comment', forState: 'closed'},
         {name: 'Priority', sort: 'priorityVal', forState: 'actual'}
     ];
     $scope.selectedWaste = new Waste();
