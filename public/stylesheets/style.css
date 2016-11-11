@@ -48,3 +48,16 @@
 .money {
     text-align: right;
 }
+
+textarea {
+    resize: none;
+}
+
+.status-filter a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.status-filter li.active {
+    border-bottom: 1px solid #333;
+}

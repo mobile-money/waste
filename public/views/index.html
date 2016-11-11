@@ -1,10 +1,14 @@
 <div class="row">
     <h1 class="text-center">Waste planning</h1>
     <div class="col-md-9">
+        <ul class="list-inline status-filter">
+            <li ng-class="{active: currentFilter === 'actual'}"><a href ng-click="filter('actual')">Actual</a></li>
+            <li ng-class="{active: currentFilter === 'closed'}"><a href ng-click="filter('closed')">Closed</a></li>
+        </ul>
         <table class="table table-hover wastes">
             <thead>
                 <tr>
-                    <th ng-repeat="header in headers">
+                    <th ng-repeat="header in headers | forState:currentFilter">
                         <a ng-if="header.sort" href ng-click="setSort(header.sort)">
                             <span>{{header.name}}</span>
                             <i ng-if="sort == header.sort || sort == '-' + header.sort"
@@ -17,14 +21,15 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="waste in wastes | orderBy:sort" ng-click="selectWaste(waste)"
+                <tr ng-repeat="waste in wastes | orderBy:sort | filter:{status:currentFilter}" ng-click="selectWaste(waste)"
                     ng-class="{'selected': selectedWaste && selectedWaste._id == waste._id}">
                     <td>{{waste.title}}</td>
                     <td>{{waste.dateAdded | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
+                    <td ng-if="waste.status === 'closed'">{{waste.closedAt | date : 'yyyy-MM-dd HH:mm:ss'}}</td>
                     <td>{{waste.cost}}</td>
-                    <td>{{waste.actions}}</td>
-                    <td><span class="label pr-{{waste.priority}}">{{waste.priority}}</span></td>
-                    <td><span class="label u-{{waste.urgency}}">{{waste.urgency}}</span></td>
+                    <td ng-if="waste.status === 'closed'">{{waste.actualCost}}</td>
+                    <td ng-if="waste.status === 'actual'">{{waste.actions}}</td>
+                    <td ng-if="waste.status === 'actual'"><span class="label pr-{{waste.priority}}">{{waste.priority}}</span></td>
                 </tr>
             </tbody>
         </table>
@@ -60,27 +65,8 @@
             </label>
         </div>
 
-        <div class="radio form-group text-right">
-            <span class="pull-left">urgency</span>
-            <label for="u-tomorrow" class="text-danger">
-                <input type="radio" ng-model="selectedWaste.urgency" value="tomorrow" id="u-tomorrow" />
-                tomorrow
-            </label>
-            <label for="u-week" class="text-warning">
-                <input type="radio" ng-model="selectedWaste.urgency" value="week" id="u-week"/>
-                this week
-            </label>
-            <label for="u-month" class="text-info">
-                <input type="radio" ng-model="selectedWaste.urgency" value="month" id="u-month" />
-                this month
-            </label>
-            <label for="u-later">
-                <input type="radio" ng-model="selectedWaste.urgency" value="later" id="u-later" />
-                later
-            </label>
-        </div>
-
         <div class="form-group text-right">
+            <button type="button" class="btn btn-success pull-left" ng-if="selectedWaste._id" ng-click="closeWaste()">Close <i class="glyphicon glyphicon-check"></i></button>
             <button type="button" class="btn btn-primary" ng-if="selectedWaste._id" ng-click="unselect()">Cancel</button>
             <button class="btn btn-primary" type="submit"
                     ng-disabled="addWasteForm.$invalid">{{selectedWaste._id ? 'Save' : 'Add'}}</button>

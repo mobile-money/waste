@@ -22,6 +22,7 @@
     "angular-loading-bar": "*",
     "angular-growl-v2": "*",
     "highcharts": "*",
-    "highcharts-ng": "*"
+    "highcharts-ng": "*",
+    "angular-bootstrap": "*"
   }
 }

@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <h4 class="modal-title text-primary">Close waste</h4>
+</div>
+
+<div class="modal-body">
+    <form class="form" name="closeForm">
+        <div class="form-group">
+            <input type="text" ng-model="realPrice" class="form-control" placeholder="actual cost" ng-pattern="/^\d{1,6}$/" required />
+        </div>
+        <div class="form-group">
+            <textarea type="text" ng-model="comment" class="form-control" rows="5" placeholder="comment"></textarea>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button type="button" ng-click="cancel()" class="btn btn-link">Cancel</button>
+    <a href ng-disabled="closeForm.$invalid" ng-click="closeWaste()" class="btn btn-primary">OK</a>
+</div>

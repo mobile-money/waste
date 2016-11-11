@@ -54,6 +54,8 @@ router.get('/logout', function(req, res) {
 });
 
 router.post('/api/waste', loginChecker.ensureLoggedIn(), function(req, res) {
+    var waste = req.body;
+    waste.status = 'actual';
     db.get('waste').insert(req.body, function() {
         res.sendStatus(201);
     });
@@ -68,8 +70,21 @@ router.put('/api/waste/:wasteId', loginChecker.ensureLoggedIn(), function(req, r
         res.sendStatus(200);
     });
 });
+router.put('/api/waste/:wasteId/close', loginChecker.ensureLoggedIn(), function(req, res) {
+    db.get('waste').update(req.params.wasteId, {$set: {
+        actualCost: req.body.actualCost,
+        comment: req.body.comment,
+        closedAt: new Date(),
+        status: 'closed'
+    }}).then(function() {
+        res.sendStatus(200);
+    });
+});
 router.delete('/api/waste/:wasteId', loginChecker.ensureLoggedIn(), function(req, res) {
-    db.get('waste').remove(req.params.wasteId, function() {
+    db.get('waste').update(req.params.wasteId, {$set: {
+        status: 'deleted',
+        deletedAt: new Date()
+    }}).then(function() {
         res.sendStatus(204);
     });
 });

@@ -5,22 +5,30 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Waste tool</title>
+
         <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="bower_components/angular-loading-bar/build/loading-bar.min.css" rel="stylesheet" type="text/css" />
         <link href="bower_components/angular-growl-v2/build/angular-growl.min.css" rel="stylesheet" type="text/css"/>
         <link href="stylesheets/style.css" rel="stylesheet" type="text/css" />
+
         <script src="bower_components/angular/angular.min.js"></script>
         <script src="bower_components/angular-ui-router/release/angular-ui-router.min.js"></script>
         <script src="bower_components/angular-loading-bar/build/loading-bar.min.js"></script>
         <script src="bower_components/angular-growl-v2/build/angular-growl.min.js"></script>
+        <script src="bower_components/highcharts/highcharts.js"></script>
+        <script src="bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+
         <script src="javascripts/app.js"></script>
+        <script src="javascripts/controllers/index.ctrl.js"></script>
+        <script src="javascripts/controllers/money.ctrl.js"></script>
+
         <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
 
-        <script src="bower_components/highcharts/highcharts.js"></script>
-        <script src="bower_components/highcharts-ng/dist/highcharts-ng.min.js"></script>
+
     </head>
 
     <body ng-app="waste" class="">
@@ -30,7 +38,7 @@
                 <h1>Waste analytics</h1>
                 <div>
                     <ul class="list-inline navi">
-                        <li ui-sref-active="active"><a ui-sref="index">Wastes</a></li>
+                        <li ui-sref-active="active"><a ui-sref="index">Waste</a></li>
                         <li ui-sref-active="active"><a ui-sref="money">Money</a></li>
                         <li class="pull-right"><a href="/logout">Logout</a></li>
                     </ul>
