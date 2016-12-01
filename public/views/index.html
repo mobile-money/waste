@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" ng-click="unselect()">
     <h1 class="text-center">Waste planning</h1>
     <div class="col-md-9">
         <ul class="list-inline status-filter">
@@ -21,7 +21,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="waste in wastes | orderBy:sort | filter:{status:currentFilter}" ng-click="selectWaste(waste)"
+                <tr ng-repeat="waste in wastes | orderBy:sort | filter:{status:currentFilter}"
+                    ng-click="selectWaste($event, waste)"
                     ng-class="{'selected': selectedWaste && selectedWaste._id == waste._id}">
                     <td>{{waste.title}}</td>
                     <td>{{waste.dateAdded | date : 'yyyy-MM-dd HH:mm:ss'}}</td>

@@ -13,7 +13,7 @@ angular.module('waste').controller('IndexController', function($scope, $http, $u
     $scope.filter = function(f) {
         $scope.currentFilter = f;
         $scope.sort = f === 'actual' ? 'priorityVal' : '-closedAt';
-    }
+    };
     $scope.headers = [
         {name: 'Title', sort: 'title', forState: 'all'},
         {name: 'Date Added', sort: 'dateAdded', forState: 'all'},
@@ -49,6 +49,7 @@ angular.module('waste').controller('IndexController', function($scope, $http, $u
             $http.post('/api/waste', selectedWaste).then(function() {
                 $scope.wastes.push(selectedWaste);
                 $scope.selectedWaste = new Waste();
+                growl.success('Added!');
             });
         } else {
             selectedWaste.dateUpdated = new Date();
@@ -58,6 +59,7 @@ angular.module('waste').controller('IndexController', function($scope, $http, $u
             });
         }
     };
+
     $scope.deleteWaste = function() {
         $scope.wastes.splice($scope.wastes.indexOf($scope.selectedWaste), 1);
         if ($scope.selectedWaste._id) $http.delete('/api/waste/' + $scope.selectedWaste._id);
@@ -79,8 +81,9 @@ angular.module('waste').controller('IndexController', function($scope, $http, $u
         if ($scope.sort == sort) sort = '-' + sort;
         $scope.sort = sort;
     };
-    $scope.selectWaste = function(waste) {
+    $scope.selectWaste = function($event, waste) {
         $scope.selectedWaste = waste;
+        $event.stopPropagation();
     };
     $scope.unselect =function() {
         $scope.selectedWaste = new Waste();
